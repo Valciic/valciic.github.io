@@ -27,6 +27,7 @@ body {
     height: auto;
     /* justify-content: center; */
     align-items: center;
+    padding-inline: 1em;
 }
 .hidden {
     display: none;
@@ -69,13 +70,13 @@ label.alert {
 #double-form {
     text-align: center;
     margin-block-start: 2em;
+    max-width: 300px;
 }
 #timer {
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 28px;
-    margin-block: 1em;
 }
 .form-button {
     padding: 1em 0.6em;
