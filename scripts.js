@@ -38,6 +38,11 @@ main();
 function main() {
     form.addEventListener('submit', handleFormSubmit);
     input.addEventListener('input', handleUserInput);
+    input.addEventListener('keydown', (e) => {
+        if (e.key === ' ') {
+            e.preventDefault();
+        }
+    });
     actionBtn.addEventListener('click', nextDouble);
     stopBtn.addEventListener('click', () => {
         stopTimer();
