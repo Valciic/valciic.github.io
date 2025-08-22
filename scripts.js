@@ -33,26 +33,17 @@ let seconds = 0;
 let intervalId = null;
 let practiceDoubles = [];
 let doubleHitCount = -1;
-const inputPattern = /^[1-9B]$/;
+// Strict: final validation
+const strictPattern = /^(?:[1-9]|1[0-9]|20|B)(?:,(?:[1-9]|1[0-9]|20|B))*$/i;
+
+// Relaxed validation (typing / mobile-friendly)
+const relaxedPattern = /^([1-9]?|1[0-9]?|20?|B)?(,([1-9]?|1[0-9]?|20?|B)?)*$/i;
 main();
 
 function main() {
     form.addEventListener('submit', handleFormSubmit);
     input.addEventListener('input', handleUserInput);
-    input.addEventListener('keydown', (e) => {
-        if (
-            e.key === "Backspace" ||
-            e.key === "Tab" ||
-            e.key === "ArrowLeft" ||
-            e.key === "ArrowRight" ||
-            e.key === "Delete" ||
-            e.key === "Enter" ||
-            e.key === ','
-        ) return;
-        if (e.key === ' ' || !inputPattern.test(e.key)) {
-            e.preventDefault();
-        }
-    });
+    input.addEventListener('blur', handleStrictPattern)
     actionBtn.addEventListener('click', nextDouble);
     stopBtn.addEventListener('click', () => {
         stopTimer();
@@ -87,13 +78,26 @@ function handleFormSubmit(e) {
 }
 
 function handleUserInput(e) {
-    if (!isValidString(input.value) && input.value !== '') {
-        label.textContent = 'Only numbers from 1-20 and B allowed; split by comma';
-        label.classList.add('alert');
-        return;
+    const value = e.target.value.toUpperCase(); // handle lowercase b too
+  if (!relaxedPattern.test(value)) {
+    // remove last char if it breaks the relaxed rule
+    e.target.value = value.slice(0, -1);
+  } else {
+    e.target.value = value;
+  }
+    // if (!isValidString(input.value) && input.value !== '') {
+    //     label.textContent = 'Only numbers from 1-20 and B allowed; split by comma';
+    //     label.classList.add('alert');
+    //     return;
+    // }
+    // label.textContent = 'Enter doubles to practice';
+    // label.classList.remove('alert');
+}
+
+function handleStrictPattern(e) {
+    if (!strictPattern.test(e.target.value)) {
+        e.target.value = ""; // clear invalid final input
     }
-    label.textContent = 'Enter doubles to practice';
-    label.classList.remove('alert');
 }
 
 function nextDouble() {
