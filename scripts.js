@@ -33,13 +33,23 @@ let seconds = 0;
 let intervalId = null;
 let practiceDoubles = [];
 let doubleHitCount = -1;
+const inputPattern = /^[1-9B]$/;
 main();
 
 function main() {
     form.addEventListener('submit', handleFormSubmit);
     input.addEventListener('input', handleUserInput);
     input.addEventListener('keydown', (e) => {
-        if (e.key === ' ') {
+        if (
+            e.key === "Backspace" ||
+            e.key === "Tab" ||
+            e.key === "ArrowLeft" ||
+            e.key === "ArrowRight" ||
+            e.key === "Delete" ||
+            e.key === "Enter" ||
+            e.key === ','
+        ) return;
+        if (e.key === ' ' || !inputPattern.test(e.key)) {
             e.preventDefault();
         }
     });
